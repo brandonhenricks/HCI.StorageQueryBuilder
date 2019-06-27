@@ -15,5 +15,10 @@ namespace HCI.StorageQueryBuilder
 			Value = value ?? throw new ArgumentNullException(nameof(value));
 			Operation = operation ?? throw new ArgumentNullException(nameof(operation));
 		}
+
+		public override string ToString()
+		{
+			return TableQuery.GenerateFilterCondition(Key, Operation, Value);
+		}
 	}
 }

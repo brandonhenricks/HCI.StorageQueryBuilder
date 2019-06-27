@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HCI.StorageQueryBuilder
 {
-	public sealed class StorageQueryBuilder : IStorageQueryBuilder
+	public sealed class QueryBuilder : IQueryBuilder
 	{
 		private readonly IList<IQueryFilter> _queryFilters;
 		private readonly IList<string> _columns;
@@ -13,36 +13,40 @@ namespace HCI.StorageQueryBuilder
 
 		public IReadOnlyList<IQueryFilter> Filters => _queryFilters.ToList();
 
-		public StorageQueryBuilder()
+		public QueryBuilder()
 		{
 			_queryFilters = new List<IQueryFilter>();
 			_columns = new List<string>();
 		}
 
-		public StorageQueryBuilder(IList<IQueryFilter> queryFilters)
+		public QueryBuilder(IList<IQueryFilter> queryFilters)
 		{
 			_queryFilters = queryFilters ?? throw new ArgumentNullException(nameof(queryFilters));
 		}
 
-		public StorageQueryBuilder(IList<IQueryFilter> queryFilters, IList<string> columns) : this(queryFilters)
+		public QueryBuilder(IList<IQueryFilter> queryFilters, IList<string> columns) : this(queryFilters)
 		{
 			_queryFilters = queryFilters ?? throw new ArgumentNullException(nameof(queryFilters));
 			_columns = columns ?? throw new ArgumentNullException(nameof(columns));
 		}
 
-		public IStorageQueryBuilder AddFilter(IQueryFilter filter)
+		public IQueryBuilder AddFilter(IQueryFilter filter)
 		{
+			if (filter is null) throw new ArgumentNullException(nameof(filter));
+
 			_queryFilters.Add(filter);
+
 			return this;
 		}
 
-		public IStorageQueryBuilder AddFilter(string key, string value, string operation = "eq")
+		public IQueryBuilder AddFilter(string key, string value, string operation = "eq")
 		{
 			_queryFilters.Add(new QueryFilter(key, value, operation));
+
 			return this;
 		}
 
-		public IStorageQueryBuilder AddFilters(IEnumerable<KeyValuePair<string, string>> queryParams)
+		public IQueryBuilder AddFilters(IEnumerable<KeyValuePair<string, string>> queryParams)
 		{
 			foreach (var query in queryParams)
 			{
@@ -52,7 +56,7 @@ namespace HCI.StorageQueryBuilder
 			return this;
 		}
 
-		public IStorageQueryBuilder AddFilters(IEnumerable<IQueryFilter> queryParams)
+		public IQueryBuilder AddFilters(IEnumerable<IQueryFilter> queryParams)
 		{
 			foreach (var query in queryParams)
 			{
@@ -62,7 +66,7 @@ namespace HCI.StorageQueryBuilder
 			return this;
 		}
 
-		public IStorageQueryBuilder Select(IList<string> columns)
+		public IQueryBuilder Select(IList<string> columns)
 		{
 			foreach (var column in columns)
 			{
@@ -74,7 +78,7 @@ namespace HCI.StorageQueryBuilder
 
 		public IStorageQuery Build()
 		{
-			return new StorageQuery();
+			return new StorageQuery(_columns, _queryFilters);
 		}
 	}
 }

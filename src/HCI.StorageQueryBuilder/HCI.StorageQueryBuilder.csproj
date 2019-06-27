@@ -2,8 +2,26 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <Authors>Brandon Henricks</Authors>
+    <Copyright>2019</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/brandonhenricks/HCI.StorageQueryBuilder/master/LICENSE</PackageLicenseUrl>
+    <Owners>Brandon Henricks</Owners>
+    <PackageProjectUrl>https://github.com/brandonhenricks/HCI.StorageQueryBuilder</PackageProjectUrl>
+    <Summary>Fluent TableQuery builder for WindowsAzure Storage</Summary>
+    <PackageTags>azure netstandard tablequery tablestorage</PackageTags>
+    <Title>HCI.StorageQueryBuilder</Title>
+    <Description>Fluent TableQuery builder for WindowsAzure Storage</Description>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>

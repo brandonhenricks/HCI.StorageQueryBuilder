@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace HCI.StorageQueryBuilder
 {
 	public interface IQueryFilter
