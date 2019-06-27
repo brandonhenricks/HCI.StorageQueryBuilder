@@ -12,6 +12,9 @@
     <PackageTags>azure netstandard tablequery tablestorage</PackageTags>
     <Title>HCI.StorageQueryBuilder</Title>
     <Description>Fluent TableQuery builder for WindowsAzure Storage</Description>
+    <ReleaseVersion>1.0</ReleaseVersion>
+    <PackageId>StorageQueryBuilder</PackageId>
+    <PackageVersion>1.0</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

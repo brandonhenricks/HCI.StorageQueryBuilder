@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{77CE7ECF-7ECD-4DA2-9B26-7ED80FEA1683}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCI.StorageQueryBuilder", "src\HCI.StorageQueryBuilder\HCI.StorageQueryBuilder.csproj", "{E0B19A9B-EF20-4496-BEEE-DACCD6476AAF}"
@@ -29,5 +30,19 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7DF19C17-2901-45E7-80FA-BFF866504CE5} = {CBE571BC-7D4B-4E77-BB22-B7A421829007}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.TextStylePolicy = $2
+		$2.inheritsSet = null
+		$2.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $3
+		$3.scope = text/x-csharp
+		$0.TextStylePolicy = $4
+		$4.scope = text/plain
+		$0.VersionControlPolicy = $5
+		version = 1.0
 	EndGlobalSection
 EndGlobal

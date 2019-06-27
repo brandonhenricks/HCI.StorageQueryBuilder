@@ -1,2 +1,2 @@
-# HCI.StorageQueryBuilder
-WindowsAzure Query Builder for C#
+﻿# HCI.StorageQueryBuilder
+WindowsAzure TableQuery Builder for C#
