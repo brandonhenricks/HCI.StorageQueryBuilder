@@ -9,6 +9,8 @@ namespace HCI.StorageQueryBuilder
 		private readonly IList<IQueryFilter> _queryFilters;
 		private readonly IList<string> _columns;
 
+		public int ColumnCount => _columns.Count;
+
 		public int FilterCount => _queryFilters.Count;
 
 		public IReadOnlyList<IQueryFilter> Filters => _queryFilters.ToList();
@@ -79,6 +81,12 @@ namespace HCI.StorageQueryBuilder
 		public IStorageQuery Build()
 		{
 			return new StorageQuery(_columns, _queryFilters);
+		}
+
+		public void Clear()
+		{
+			_queryFilters.Clear();
+			_columns.Clear();
 		}
 	}
 }

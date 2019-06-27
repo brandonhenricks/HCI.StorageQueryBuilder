@@ -11,9 +11,9 @@ namespace HCI.StorageQueryBuilder
 
 		public QueryFilter(string key, string value, string operation = QueryComparisons.Equal)
 		{
-			Key = key ?? throw new ArgumentNullException(nameof(key));
-			Value = value ?? throw new ArgumentNullException(nameof(value));
-			Operation = operation ?? throw new ArgumentNullException(nameof(operation));
+			Key = key?.Trim() ?? throw new ArgumentNullException(nameof(key));
+			Value = value?.Trim() ?? throw new ArgumentNullException(nameof(value));
+			Operation = operation.ToLowerInvariant().Trim() ?? throw new ArgumentNullException(nameof(operation));
 		}
 
 		public override string ToString()
