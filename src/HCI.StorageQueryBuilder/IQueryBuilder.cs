@@ -74,7 +74,13 @@ namespace HCI.StorageQueryBuilder
         IQueryBuilder RemoveFilters(IEnumerable<IQueryFilter> filters);
 
         /// <summary>
-        /// Add a list of columns to return.
+        /// Remove all <see cref="IQueryFilter"/> from <see cref="Filters"/>.
+        /// </summary>
+        /// <returns></returns>
+        IQueryBuilder RemoveFilters();
+
+        /// <summary>
+        /// Adds a range of columns to <see cref="Columns"/> for returning.
         /// </summary>
         /// <param name="columns"></param>
         IQueryBuilder Select(IList<string> columns);

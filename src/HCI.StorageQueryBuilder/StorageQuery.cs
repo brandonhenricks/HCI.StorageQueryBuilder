@@ -23,14 +23,9 @@ namespace HCI.StorageQueryBuilder
 
         public TableQuery ToTableQuery()
         {
-            var query = new TableQuery();
+            var query = BuildQueryWhereClause(_queryFilters);
 
-            foreach (var item in _queryFilters)
-            {
-                query.Where(TableQuery.GenerateFilterCondition(item.Key, item.Operation, item.Value));
-            }
-
-            if (_columns.Count > 0)
+            if (HasColumns(_columns))
             {
                 query.Select(_columns);
             }
@@ -50,7 +45,7 @@ namespace HCI.StorageQueryBuilder
                 query.Where(TableQuery.GenerateFilterCondition(item.Key, item.Operation, item.Value));
             }
 
-            if (_columns.Count > 0)
+            if (HasColumns(_columns))
             {
                 query.Select(_columns);
             }
@@ -60,5 +55,20 @@ namespace HCI.StorageQueryBuilder
 
             return query;
         }
+
+        private static bool HasColumns(IList<string> columns) => columns.Count > 0;
+
+        private static TableQuery BuildQueryWhereClause(IEnumerable<IQueryFilter> queryFilters)
+        {
+            var query = new TableQuery();
+
+            foreach (var item in queryFilters)
+            {
+                query.Where(TableQuery.GenerateFilterCondition(item.Key, item.Operation, item.Value));
+            }
+
+            return query;
+        }
+
     }
 }

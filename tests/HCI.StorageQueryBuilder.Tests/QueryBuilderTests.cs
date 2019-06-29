@@ -21,14 +21,6 @@ namespace HCI.StorageQueryBuilder.Tests
         }
 
         [TestMethod]
-        public void QueryBuilder_AddFilter_Null_Argument_ThrowsException()
-        {
-            var builder = new QueryBuilder();
-
-            Assert.ThrowsException<ArgumentNullException>(() => builder.AddFilter(null));
-        }
-
-        [TestMethod]
         public void QueryBuilder_AddFilter_Null_Key_ThrowsException()
         {
             var builder = new QueryBuilder();
@@ -116,6 +108,23 @@ namespace HCI.StorageQueryBuilder.Tests
                 .ToTableQuery<TableEntity>();
 
             Assert.IsInstanceOfType(builder, typeof(TableQuery<TableEntity>));
+        }
+
+
+        [TestMethod]
+        public void QueryBuilder_RemoveFilters_Returns_Correct_Filter_Count()
+        {
+            var builder = new QueryBuilder()
+                .AddFilter("PartitionKey", "test")
+                .AddFilter("RowKey", "000-000-000")
+                .Select(new List<string>() { "PartitionKey" });
+
+            Assert.AreEqual(1, builder.ColumnCount);
+
+            builder.RemoveFilters();
+
+            Assert.AreEqual(1, builder.ColumnCount);
+            Assert.AreEqual(0, builder.FilterCount);
         }
     }
 }

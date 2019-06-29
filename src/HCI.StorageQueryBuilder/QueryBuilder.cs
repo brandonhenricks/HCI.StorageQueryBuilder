@@ -121,6 +121,13 @@ namespace HCI.StorageQueryBuilder
             return this;
         }
 
+        public IQueryBuilder RemoveFilters()
+        {
+            _queryFilters.Clear();
+
+            return this;
+        }
+
         public IQueryBuilder RemoveFilters(IEnumerable<IQueryFilter> filters)
         {
             var removeFilters = filters.ToList();
