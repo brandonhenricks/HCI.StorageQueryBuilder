@@ -94,8 +94,8 @@ namespace HCI.StorageQueryBuilder
 
         public void Clear()
         {
-            _queryFilters.Clear();
-            _columns.Clear();
+            _queryFilters?.Clear();
+            _columns?.Clear();
         }
 
         public IQueryBuilder RemoveFilter(IQueryFilter filter)
@@ -116,14 +116,14 @@ namespace HCI.StorageQueryBuilder
                 throw new ArgumentOutOfRangeException(nameof(key));
             }
 
-            _queryFilters.Remove(filter);
+            _queryFilters?.Remove(filter);
 
             return this;
         }
 
         public IQueryBuilder RemoveFilters()
         {
-            _queryFilters.Clear();
+            _queryFilters?.Clear();
 
             return this;
         }
@@ -140,7 +140,7 @@ namespace HCI.StorageQueryBuilder
                 }
             }
 
-            removeFilters.Clear();
+            removeFilters?.Clear();
 
             return this;
         }
@@ -149,7 +149,8 @@ namespace HCI.StorageQueryBuilder
         {
             foreach (var column in columns)
             {
-                _columns.Add(column?.Trim());
+                if (column is null) continue;
+                _columns.Add(column.Trim());
             }
 
             return this;
