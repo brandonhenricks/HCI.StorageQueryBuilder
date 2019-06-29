@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace HCI.StorageQueryBuilder
@@ -19,6 +20,34 @@ namespace HCI.StorageQueryBuilder
         public override string ToString()
         {
             return TableQuery.GenerateFilterCondition(Key, Operation, Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is QueryFilter filter &&
+                   Key == filter.Key &&
+                   Value == filter.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = 206514262;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Key);
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Value);
+                return hashCode;
+            }
+        }
+
+        public static bool operator ==(QueryFilter left, QueryFilter right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(QueryFilter left, QueryFilter right)
+        {
+            return !(left == right);
         }
     }
 }

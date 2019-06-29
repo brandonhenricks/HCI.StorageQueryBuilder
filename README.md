@@ -15,11 +15,21 @@ Install-Package HCI.StorageQueryBuilder
 ```csharp
 using HCI.StorageQueryBuilder;
 
+// Create a TableQuery with no filters and returning only the PartitionKey
 var builder = new QueryBuilder()
     .Select(new List<string>() { "PartitionKey" })
     .Build()
     .ToTableQuery();
+```
 
+```csharp
+using HCI.StorageQueryBuilder;
+
+// Create a TableQuery with a filter on PartitionKey and returning only the PartitionKey data.
+var builder = new QueryBuilder()
+    .AddFilter("PartitionKey", "test")
+    .AddFilter("RowKey", "000-000-000")
+    .Select(new List<string>() { "PartitionKey" });
 ```
 
 ## Contributing

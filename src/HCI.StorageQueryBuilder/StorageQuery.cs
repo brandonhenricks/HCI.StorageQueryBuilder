@@ -35,6 +35,9 @@ namespace HCI.StorageQueryBuilder
                 query.Select(_columns);
             }
 
+            _queryFilters.Clear();
+            _columns.Clear();
+
             return query;
         }
 
@@ -47,12 +50,13 @@ namespace HCI.StorageQueryBuilder
                 query.Where(TableQuery.GenerateFilterCondition(item.Key, item.Operation, item.Value));
             }
 
-
             if (_columns.Count > 0)
             {
                 query.Select(_columns);
             }
 
+            _queryFilters.Clear();
+            _columns.Clear();
 
             return query;
         }

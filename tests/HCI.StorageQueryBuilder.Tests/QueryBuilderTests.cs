@@ -74,6 +74,8 @@ namespace HCI.StorageQueryBuilder.Tests
         public void QueryBuilder_Clear_Returns_Correct_Count()
         {
             var builder = new QueryBuilder()
+                .AddFilter("PartitionKey", "test")
+                .AddFilter("RowKey", "000-000-000")
                 .Select(new List<string>() { "PartitionKey" });
 
             Assert.AreEqual(1, builder.ColumnCount);

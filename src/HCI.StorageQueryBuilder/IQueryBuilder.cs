@@ -4,7 +4,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 namespace HCI.StorageQueryBuilder
 {
     /// <summary>
-    /// QueryBuilder - Create <see cref="TableQuery"/> with FluentApi
+    /// <see cref="IQueryBuilder"/>: Create <see cref="TableQuery"/> with FluentApi syntax.
     /// </summary>
     public interface IQueryBuilder
     {
@@ -24,6 +24,11 @@ namespace HCI.StorageQueryBuilder
         IReadOnlyList<IQueryFilter> Filters { get; }
 
         /// <summary>
+        /// Returns the current columns selected.
+        /// </summary>
+        IReadOnlyList<string> Columns { get; }
+
+        /// <summary>
         /// Add a <see cref="IQueryFilter"/>.
         /// </summary>
         /// <param name="filter"></param>
@@ -38,16 +43,35 @@ namespace HCI.StorageQueryBuilder
         IQueryBuilder AddFilter(string key, string value, string operation = QueryComparisons.Equal);
 
         /// <summary>
-        /// Add a collection of <see cref="IQueryFilter"/>.
+        /// Add a collection of <see cref="IQueryFilter"/> to <see cref="Filters"/>.
         /// </summary>
         /// <param name="queryParams"></param>
         IQueryBuilder AddFilters(IEnumerable<KeyValuePair<string, string>> queryParams);
 
         /// <summary>
-        /// Add a collection of <see cref="IQueryFilter"/>.
+        /// Add a collection of <see cref="IQueryFilter"/> to <see cref="Filters"/>.
         /// </summary>
         /// <param name="queryParams"></param>
         IQueryBuilder AddFilters(IEnumerable<IQueryFilter> queryParams);
+
+        /// <summary>
+        /// Remove a <see cref="IQueryFilter"/> from <see cref="Filters"/>.
+        /// </summary>
+        /// <param name="filter"></param>
+        IQueryBuilder RemoveFilter(IQueryFilter filter);
+
+        /// <summary>
+        /// Remove a <see cref="IQueryFilter"/> from <see cref="Filters"/> by <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key"></param>
+        IQueryBuilder RemoveFilter(string key);
+
+        /// <summary>
+        /// Remove <paramref name="filters"/> from <see cref="Filters"/>.
+        /// </summary>
+        /// <param name="filters"></param>
+        /// <returns></returns>
+        IQueryBuilder RemoveFilters(IEnumerable<IQueryFilter> filters);
 
         /// <summary>
         /// Add a list of columns to return.
@@ -56,12 +80,12 @@ namespace HCI.StorageQueryBuilder
         IQueryBuilder Select(IList<string> columns);
 
         /// <summary>
-        /// Build the <see cref="IStorageQuery"/> to return a Query.
+        /// Build the <see cref="IStorageQuery"/> to return a <see cref="IStorageQuery"/>.
         /// </summary>
         IStorageQuery Build();
 
         /// <summary>
-        /// Removes all <see cref="IQueryFilter"/> and Column Names.
+        /// Removes all <see cref="IQueryFilter"/> and <see cref="Columns"/>.
         /// </summary>
         void Clear();
     }

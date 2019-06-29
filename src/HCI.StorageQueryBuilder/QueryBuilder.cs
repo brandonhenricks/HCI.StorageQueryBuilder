@@ -15,6 +15,8 @@ namespace HCI.StorageQueryBuilder
 
         public IReadOnlyList<IQueryFilter> Filters => _queryFilters.ToList();
 
+        public IReadOnlyList<string> Columns => _columns.ToList();
+
         public QueryBuilder()
         {
             _queryFilters = new List<IQueryFilter>();
@@ -34,25 +36,39 @@ namespace HCI.StorageQueryBuilder
 
         public IQueryBuilder AddFilter(IQueryFilter filter)
         {
-            if (filter is null) throw new ArgumentNullException(nameof(filter));
-
-            _queryFilters.Add(filter);
+            if (!_queryFilters.Contains<IQueryFilter>(filter))
+            {
+                _queryFilters.Add(filter);
+            }
 
             return this;
         }
 
         public IQueryBuilder AddFilter(string key, string value, string operation = "eq")
         {
-            _queryFilters.Add(new QueryFilter(key, value, operation));
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
 
-            return this;
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            return AddFilter(new QueryFilter(key, value, operation));
         }
 
         public IQueryBuilder AddFilters(IEnumerable<KeyValuePair<string, string>> queryParams)
         {
             foreach (var query in queryParams)
             {
-                AddFilter(query.Key, query.Value);
+                var filter = new QueryFilter(query.Key, query.Value);
+
+                if (!_queryFilters.Contains<IQueryFilter>(filter))
+                {
+                    _queryFilters.Add(filter);
+                }
             }
 
             return this;
@@ -62,17 +78,10 @@ namespace HCI.StorageQueryBuilder
         {
             foreach (var query in queryParams)
             {
-                _queryFilters.Add(query);
-            }
-
-            return this;
-        }
-
-        public IQueryBuilder Select(IList<string> columns)
-        {
-            foreach (var column in columns)
-            {
-                _columns.Add(column?.Trim());
+                if (!_queryFilters.Contains<IQueryFilter>(query))
+                {
+                    _queryFilters.Add(query);
+                }
             }
 
             return this;
@@ -87,6 +96,56 @@ namespace HCI.StorageQueryBuilder
         {
             _queryFilters.Clear();
             _columns.Clear();
+        }
+
+        public IQueryBuilder RemoveFilter(IQueryFilter filter)
+        {
+            if (_queryFilters.Contains(filter))
+            {
+                _queryFilters.Remove(filter);
+            }
+            return this;
+        }
+
+        public IQueryBuilder RemoveFilter(string key)
+        {
+            var filter = _queryFilters.FirstOrDefault(prop => prop.Key.Equals(key, StringComparison.OrdinalIgnoreCase));
+
+            if (filter is null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(key));
+            }
+
+            _queryFilters.Remove(filter);
+
+            return this;
+        }
+
+        public IQueryBuilder RemoveFilters(IEnumerable<IQueryFilter> filters)
+        {
+            var removeFilters = filters.ToList();
+
+            foreach (var item in removeFilters)
+            {
+                if (_queryFilters.Contains(item))
+                {
+                    _queryFilters.Remove(item);
+                }
+            }
+
+            removeFilters.Clear();
+
+            return this;
+        }
+
+        public IQueryBuilder Select(IList<string> columns)
+        {
+            foreach (var column in columns)
+            {
+                _columns.Add(column?.Trim());
+            }
+
+            return this;
         }
     }
 }
