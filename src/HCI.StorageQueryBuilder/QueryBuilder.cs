@@ -65,10 +65,9 @@ namespace HCI.StorageQueryBuilder
             {
                 var filter = new QueryFilter(query.Key, query.Value);
 
-                if (!_queryFilters.Contains<IQueryFilter>(filter))
-                {
-                    _queryFilters.Add(filter);
-                }
+                if (_queryFilters.Contains<IQueryFilter>(filter)) continue;
+
+                _queryFilters.Add(filter);
             }
 
             return this;
@@ -78,10 +77,9 @@ namespace HCI.StorageQueryBuilder
         {
             foreach (var query in queryParams)
             {
-                if (!_queryFilters.Contains<IQueryFilter>(query))
-                {
-                    _queryFilters.Add(query);
-                }
+                if (_queryFilters.Contains<IQueryFilter>(query)) continue;
+
+                _queryFilters.Add(query);
             }
 
             return this;
@@ -94,8 +92,8 @@ namespace HCI.StorageQueryBuilder
 
         public void Clear()
         {
-            _queryFilters?.Clear();
-            _columns?.Clear();
+            _queryFilters.Clear();
+            _columns.Clear();
         }
 
         public IQueryBuilder RemoveFilter(IQueryFilter filter)
@@ -135,10 +133,9 @@ namespace HCI.StorageQueryBuilder
 
             foreach (var item in removeFilters)
             {
-                if (_queryFilters.Contains(item))
-                {
-                    _queryFilters.Remove(item);
-                }
+                if (!_queryFilters.Contains(item)) continue;
+
+                _queryFilters.Remove(item);
             }
 
             removeFilters?.Clear();
