@@ -161,7 +161,7 @@ namespace HCI.StorageQueryBuilder.Tests
         [TestMethod]
         public void QueryBuilder_AddFilters_FilterCount_Correct()
         {
-            var filters = new List<IQueryFilter>()
+            var filters = new List<IQueryFilter>(2)
             {
                 new QueryFilter("RowKey", Guid.NewGuid().ToString()),
                 new QueryFilter("PartitionKey", "test")
@@ -176,7 +176,7 @@ namespace HCI.StorageQueryBuilder.Tests
         [TestMethod]
         public void QueryBuilder_RemoveFilters_FilterCount_Correct()
         {
-            var filters = new List<IQueryFilter>()
+            var filters = new List<IQueryFilter>(2)
             {
                 new QueryFilter("RowKey", Guid.NewGuid().ToString()),
                 new QueryFilter("PartitionKey", "test")
@@ -189,6 +189,26 @@ namespace HCI.StorageQueryBuilder.Tests
             builder.RemoveFilters(filters);
 
             Assert.AreEqual(1, builder.FilterCount);
+        }
+
+        [TestMethod]
+        public void QueryBuilder_Select_With_Duplicates_IgnoresDupes_Correct_Count()
+        {
+            var columns = new List<string>(5)
+            {
+                "test",
+                "test1",
+                "RowKey",
+                "PartitionKey",
+                "RowKey"
+            };
+
+            var builder = new QueryBuilder()
+                .Select(columns);
+
+            Assert.AreNotEqual(columns.Count, builder.ColumnCount);
+
+            Assert.AreEqual(columns.Count - 1, builder.ColumnCount);
         }
     }
 }
