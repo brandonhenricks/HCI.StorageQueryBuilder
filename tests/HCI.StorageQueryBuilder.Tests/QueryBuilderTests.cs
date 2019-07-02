@@ -9,6 +9,14 @@ namespace HCI.StorageQueryBuilder.Tests
     public class QueryBuilderTests
     {
         [TestMethod]
+        public void QueryBuilder_Null_Constructor_Returns_Correct_Counts()
+        {
+            var builder = new QueryBuilder();
+            Assert.AreEqual(0, builder.FilterCount);
+            Assert.AreEqual(0, builder.ColumnCount);
+        }
+
+        [TestMethod]
         public void QueryBuilder_Constructor_Null_Argument_ThrowsException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => new QueryBuilder(null));
@@ -144,7 +152,41 @@ namespace HCI.StorageQueryBuilder.Tests
                 .AddFilter("PartitionKey", "test")
                 .AddFilter("RowKey", "000-000-000")
                 .Select(new List<string>() { "PartitionKey" });
+
             builder.RemoveFilter("RowKey");
+
+            Assert.AreEqual(1, builder.FilterCount);
+        }
+
+        [TestMethod]
+        public void QueryBuilder_AddFilters_FilterCount_Correct()
+        {
+            var filters = new List<IQueryFilter>()
+            {
+                new QueryFilter("RowKey", Guid.NewGuid().ToString()),
+                new QueryFilter("PartitionKey", "test")
+            };
+
+            var builder = new QueryBuilder()
+                .AddFilters(filters);
+
+            Assert.AreEqual(2, builder.FilterCount);
+        }
+
+        [TestMethod]
+        public void QueryBuilder_RemoveFilters_FilterCount_Correct()
+        {
+            var filters = new List<IQueryFilter>()
+            {
+                new QueryFilter("RowKey", Guid.NewGuid().ToString()),
+                new QueryFilter("PartitionKey", "test")
+            };
+
+            var builder = new QueryBuilder()
+                .AddFilters(filters)
+                .AddFilter("Test", "Test");
+
+            builder.RemoveFilters(filters);
 
             Assert.AreEqual(1, builder.FilterCount);
         }
