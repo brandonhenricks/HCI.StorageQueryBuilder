@@ -24,9 +24,10 @@ namespace HCI.StorageQueryBuilder
 
         public override bool Equals(object obj)
         {
-            return obj is QueryFilter filter &&
-                   Key == filter.Key &&
-                   Value == filter.Value;
+            return obj is QueryFilter filter
+                && Key.Equals(filter.Key, StringComparison.OrdinalIgnoreCase)
+                && Value.Equals(filter.Value, StringComparison.OrdinalIgnoreCase)
+                && Operation.Equals(filter.Operation, StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode()
@@ -36,6 +37,7 @@ namespace HCI.StorageQueryBuilder
                 var hashCode = 206514262;
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Key);
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Value);
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Operation);
                 return hashCode;
             }
         }
