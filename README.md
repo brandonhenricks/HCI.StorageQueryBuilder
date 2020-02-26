@@ -2,6 +2,8 @@
 
 StorageQueryBuilder is a .net standard library for quickly building an Azure Storage TableQuery.
 
+![.NET Core](https://github.com/brandonhenricks/HCI.StorageQueryBuilder/workflows/.NET%20Core/badge.svg)
+
 ## Installation
 
 Use the package manager [nuget](https://nuget.org) to install StorageQueryBuilder.
